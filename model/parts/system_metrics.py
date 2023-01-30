@@ -153,9 +153,12 @@ def policy_total_online_validator_rewards(
     total_priority_fee_to_validators = previous_state[
         "total_priority_fee_to_validators"
     ]
-    total_realized_mev_to_validators = previous_state[
-        "total_realized_mev_to_validators"
-    ]
+    total_realized_mev_to_validators = previous_state["total_realized_mev_to_validators"]
+    total_realized_mev_to_validators_aa = previous_state["total_realized_mev_to_validators_aa"]
+    total_realized_mev_to_validators_normal = previous_state["total_realized_mev_to_validators_normal"]
+    # total_realized_mev_to_validators_aa = previous_state[
+    #     "total_realized_mev_to_validators_aa"
+    # ]
 
     # Calculate total rewards for online validators
     total_online_validator_rewards = (
@@ -163,7 +166,7 @@ def policy_total_online_validator_rewards(
         - validating_penalties
         + whistleblower_rewards
         + total_priority_fee_to_validators
-        + total_realized_mev_to_validators * constants.gwei
+        + (total_realized_mev_to_validators_normal + total_realized_mev_to_validators_aa) * constants.gwei
     )
 
     return {"total_online_validator_rewards": total_online_validator_rewards}

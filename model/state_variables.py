@@ -135,6 +135,10 @@ class StateVariables:
     """The total realized MEV to miners pre Proof-of-Stake"""
     total_realized_mev_to_validators: ETH = 0
     """The total realized MEV to validators post Proof-of-Stake"""
+    total_realized_mev_to_validators_normal: ETH = 0
+    """The total realized normal MEV to validators post Proof-of-Stake"""
+    total_realized_mev_to_validators_aa: ETH = 0
+    """The total realized aa MEV to validators post Proof-of-Stake"""
 
     # System metric state variables
     validator_eth_staked: np.ndarray = np.zeros(

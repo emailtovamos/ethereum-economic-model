@@ -153,7 +153,7 @@ _state_update_blocks = [
     },
     {
         "description": """
-            Maximum Extractable Value (MEV)
+            Maximum Extractable Value (MEV) normal
         """,
         "policies": {
             "mev": ethereum.policy_mev,
@@ -165,8 +165,30 @@ _state_update_blocks = [
             "total_realized_mev_to_validators": update_from_signal(
                 "total_realized_mev_to_validators"
             ),
+            "total_realized_mev_to_validators_normal": update_from_signal(
+                "total_realized_mev_to_validators_normal"
+            ),
+            "total_realized_mev_to_validators_aa": update_from_signal(
+                "total_realized_mev_to_validators_aa"
+            ),
         },
     },
+    # {
+    #     "description": """
+    #         Maximum Extractable Value (MEV) AA
+    #     """,
+    #     "policies": {
+    #         "mev": ethereum.policy_mev_aa,
+    #     },
+    #     "variables": {
+    #         "total_realized_mev_to_miners": update_from_signal(
+    #             "total_realized_mev_to_miners"
+    #         ),
+    #         "total_realized_mev_to_validators": update_from_signal(
+    #             "total_realized_mev_to_validators"
+    #         ),
+    #     },
+    # },
     {
         "description": """
             Online validator reward aggregation

@@ -42,6 +42,8 @@ legend_state_variable_name_mapping = {
     "sync_reward_eth": "Sync Reward",
     "total_priority_fee_to_validators_eth": "Priority Fees",
     "total_realized_mev_to_validators": "Realized MEV",
+    "total_realized_mev_to_validators_normal": "Realized MEV normal",
+    "total_realized_mev_to_validators_aa": "Realized MEV aa",
     "supply_inflation_pct": "ETH Supply inflation",
     "total_revenue_yields_pct": "Total Revenue Yields",
     "total_profit_yields_pct": "Total Profit Yields",
@@ -190,6 +192,8 @@ def plot_validator_incentives_pie_chart(df):
         [
             "total_priority_fee_to_validators_eth",
             "total_realized_mev_to_validators",
+            "total_realized_mev_to_validators_normal",
+            "total_realized_mev_to_validators_aa",
             "source_reward_eth",
             "target_reward_eth",
             "head_reward_eth",

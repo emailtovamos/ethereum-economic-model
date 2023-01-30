@@ -82,7 +82,7 @@ def post_process(df: pd.DataFrame, drop_timestep_zero=True, parameters=parameter
 
     # Calculate cumulative revenue and profit yields
     df["daily_revenue_yields_pct"] = df["total_revenue_yields_pct"] / (constants.epochs_per_year / df['dt'])
-    df["cumulative_revenue_yields_pct"] = df.groupby('subset')["daily_revenue_yields_pct"].transform('cumsum')
+    df["cumulative_revenue_yields_pct"] = df.groupby('subset')["daily_revenue_yields_pct"].transform('cumsum') # todo add extra for aa
     df["daily_profit_yields_pct"] = df["total_profit_yields_pct"] / (constants.epochs_per_year / df['dt'])
     df["cumulative_profit_yields_pct"] = df.groupby('subset')["daily_profit_yields_pct"].transform('cumsum')
 

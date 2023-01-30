@@ -252,6 +252,9 @@ class Parameters:
     this value can then be calculated per-block to set the `mev_per_block` parameter.
     """
 
+    mev_aa_percentage: List[Percentage] = default([0.4])
+    # Account Abstraction (AA) percentage in mev assuming total mev post-AA remains constant
+
     # Parameters from the Eth2 specification
     # Uppercase used for all parameters from Eth2 specification
     BASE_REWARD_FACTOR: List[int] = default([64])
