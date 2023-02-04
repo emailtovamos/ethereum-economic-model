@@ -140,6 +140,7 @@ def policy_mev(params, substep, state_history, previous_state) -> typing.Dict[st
     dt = params["dt"]
     mev_per_block = params["mev_per_block"]
     mev_percentage = params["mev_aa_percentage"]
+    mev_percentage = 0.4
 
     # State Variables
     stage = Stage(previous_state["stage"])
@@ -170,47 +171,6 @@ def policy_mev(params, substep, state_history, previous_state) -> typing.Dict[st
         "total_realized_mev_to_validators_normal": total_realized_mev_to_validators_normal,
         "total_realized_mev_to_validators_aa": total_realized_mev_to_validators_aa,
     }
-
-def policy_mev_aa(params, substep, state_history, previous_state) -> typing.Dict[str, ETH]:
-    """
-    ## Maximum Extractable Value (MEV) Policy
-
-    MEV is allocated to miners pre Proof-of-Stake and validators post Proof-of-Stake,
-    using the `mev_per_block` System Parameter.
-
-    By default `mev_per_block` is set zero, to only consider the
-    influence of Proof-of-Stake (PoS) incentives on validator yields.
-
-    See [ASSUMPTIONS.md](ASSUMPTIONS.md) document for further details.
-    """
-    # Parameters
-    dt = params["dt"]
-    mev_per_block = params["mev_per_block"]
-    mev_percentage = params["mev_aa_percentage"]
-
-    # State Variables
-    stage = Stage(previous_state["stage"])
-
-    if stage in [Stage.PROOF_OF_STAKE]:
-        total_realized_mev_to_miners = 0
-        # Allocate realized MEV to validators post Proof-of-Stake
-        total_realized_mev_to_validators = (
-            mev_per_block * constants.slots_per_epoch * dt
-        )
-    else:  # Stage is pre Proof-of-Stake
-        # Allocate realized MEV to miners pre Proof-of-Stake
-        total_realized_mev_to_miners = (
-            mev_per_block * constants.pow_blocks_per_epoch * dt
-        )
-        total_realized_mev_to_validators = 0
-
-    return {
-        "total_realized_mev_to_miners": total_realized_mev_to_miners*mev_percentage,
-        "total_realized_mev_to_validators": total_realized_mev_to_validators*mev_percentage,
-        "total_realized_mev_to_validators_normal": total_realized_mev_to_validators * (1 - mev_percentage),
-        "total_realized_mev_to_validators_aa": total_realized_mev_to_validators * (mev_percentage),
-    }
-
 
 def policy_eip1559_transaction_pricing(
     params, substep, state_history, previous_state

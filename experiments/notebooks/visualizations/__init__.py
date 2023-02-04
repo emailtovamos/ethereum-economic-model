@@ -204,6 +204,8 @@ def plot_validator_incentives_pie_chart(df):
     labels = [
         "Priority Fees",
         "MEV",
+        "MEV_Normal",
+        "MEV_AA",
         "Source Reward",
         "Target Reward",
         "Head Reward",
@@ -211,7 +213,7 @@ def plot_validator_incentives_pie_chart(df):
         "Sync Reward",
     ]
 
-    fig = go.Figure(data=[go.Pie(labels=labels, values=list(validator_rewards.values()), pull=[0.2, 0.2, 0, 0, 0, 0, 0])])
+    fig = go.Figure(data=[go.Pie(labels=labels, values=list(validator_rewards.values()), pull=[0.2, 0.2,0.2, 0.2, 0, 0, 0, 0, 0])])
 
     fig.for_each_trace(
         lambda trace: trace.update(

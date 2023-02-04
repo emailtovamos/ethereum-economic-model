@@ -154,6 +154,9 @@ def policy_total_online_validator_rewards(
         "total_priority_fee_to_validators"
     ]
     total_realized_mev_to_validators = previous_state["total_realized_mev_to_validators"]
+    li = list(previous_state)
+    print("list of keys of previous_state is: ")
+    print(li)
     total_realized_mev_to_validators_aa = previous_state["total_realized_mev_to_validators_aa"]
     total_realized_mev_to_validators_normal = previous_state["total_realized_mev_to_validators_normal"]
     # total_realized_mev_to_validators_aa = previous_state[
