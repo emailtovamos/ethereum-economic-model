@@ -138,25 +138,39 @@ def policy_mev(params, substep, state_history, previous_state) -> typing.Dict[st
     """
     # Parameters
     dt = params["dt"]
-    mev_per_block = params["mev_per_block"]
+    mev_per_block = params["mev_per_block"] # todo make it a variable. e.g. how about mev_per_block changes and increases with time?
     mev_percentage = params["mev_aa_percentage"]
     mev_percentage = 0.4
 
     # State Variables
     stage = Stage(previous_state["stage"])
 
+    run = previous_state["run"]
+    timestep = previous_state["timestep"]
+
+    aa_process = params["aa_process"]
+
+    aa_mev_per_epoch = aa_process(run, timestep * dt)
+
     if stage in [Stage.PROOF_OF_STAKE]:
         total_realized_mev_to_miners = 0
         # Allocate realized MEV to validators post Proof-of-Stake
         total_realized_mev_to_validators = (
-            mev_per_block * constants.slots_per_epoch * dt
+            mev_per_block * constants.slots_per_epoch * dt # 0.2*32*(225*30)
         )
         total_realized_mev_to_validators_normal = (
                 mev_per_block * constants.slots_per_epoch * dt * (1-mev_percentage)
         )
         total_realized_mev_to_validators_aa = (
                 mev_per_block * constants.slots_per_epoch * dt * (mev_percentage)
-        )
+        ) # todo do cumulative for this as well!
+        total_realized_mev_to_validators_aa_independent = (
+                aa_mev_per_epoch * dt
+        )  # here we independently assume aa mev per epoch which doesn't depend on fees etc.
+        # todo have 2 variables for aa mev
+        #   1. will have aa mev where it simply takes up from the normal mev
+        #   2. will have aa mev which is fully independent and evolves with defined aa_process
+        total_realized_mev_to_validators_aa_independent_cumulative = previous_state["total_realized_mev_to_validators_aa_independent_cumulative"] + total_realized_mev_to_validators_aa_independent
     else:  # Stage is pre Proof-of-Stake
         # Allocate realized MEV to miners pre Proof-of-Stake
         total_realized_mev_to_miners = (
@@ -165,11 +179,15 @@ def policy_mev(params, substep, state_history, previous_state) -> typing.Dict[st
         total_realized_mev_to_validators = 0
         total_realized_mev_to_validators_normal = 0
         total_realized_mev_to_validators_aa = 0
+        total_realized_mev_to_validators_aa_independent = 0
+        total_realized_mev_to_validators_aa_independent_cumulative = 0
     return {
         "total_realized_mev_to_miners": total_realized_mev_to_miners,
         "total_realized_mev_to_validators": total_realized_mev_to_validators,
         "total_realized_mev_to_validators_normal": total_realized_mev_to_validators_normal,
         "total_realized_mev_to_validators_aa": total_realized_mev_to_validators_aa,
+        "total_realized_mev_to_validators_aa_independent": total_realized_mev_to_validators_aa_independent,
+        "total_realized_mev_to_validators_aa_independent_cumulative": total_realized_mev_to_validators_aa_independent_cumulative,
     }
 
 def policy_eip1559_transaction_pricing(

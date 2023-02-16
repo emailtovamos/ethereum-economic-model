@@ -171,6 +171,12 @@ _state_update_blocks = [
             "total_realized_mev_to_validators_aa": update_from_signal(
                 "total_realized_mev_to_validators_aa"
             ),
+            "total_realized_mev_to_validators_aa_independent": update_from_signal(
+                "total_realized_mev_to_validators_aa_independent"
+            ),
+            "total_realized_mev_to_validators_aa_independent_cumulative": update_from_signal(
+                "total_realized_mev_to_validators_aa_independent_cumulative"
+            ),
         },
     },
     {

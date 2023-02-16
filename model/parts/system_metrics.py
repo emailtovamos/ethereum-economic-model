@@ -154,10 +154,11 @@ def policy_total_online_validator_rewards(
         "total_priority_fee_to_validators"
     ]
     total_realized_mev_to_validators = previous_state["total_realized_mev_to_validators"]
-    li = list(previous_state)
-    print("list of keys of previous_state is: ")
-    print(li)
+    # li = list(previous_state)
+    # print("list of keys of previous_state is: ")
+    # print(li)
     total_realized_mev_to_validators_aa = previous_state["total_realized_mev_to_validators_aa"]
+    total_realized_mev_to_validators_aa_independent = previous_state["total_realized_mev_to_validators_aa_independent"]
     total_realized_mev_to_validators_normal = previous_state["total_realized_mev_to_validators_normal"]
     # total_realized_mev_to_validators_aa = previous_state[
     #     "total_realized_mev_to_validators_aa"
@@ -170,6 +171,15 @@ def policy_total_online_validator_rewards(
         + whistleblower_rewards
         + total_priority_fee_to_validators
         + (total_realized_mev_to_validators_normal + total_realized_mev_to_validators_aa) * constants.gwei
+    )
+
+# todo add total_online_validator_rewards_independent_aa at other relevant places
+    total_online_validator_rewards_independent_aa = (
+            validating_rewards
+            - validating_penalties
+            + whistleblower_rewards
+            + total_priority_fee_to_validators
+            + (total_realized_mev_to_validators_normal + total_realized_mev_to_validators_aa_independent) * constants.gwei
     )
 
     return {"total_online_validator_rewards": total_online_validator_rewards}

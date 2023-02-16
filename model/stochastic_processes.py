@@ -4,6 +4,7 @@ Helper functions to generate stochastic environmental processes
 
 import numpy as np
 from stochastic import processes
+import stochastic as st
 
 import experiments.simulation_configuration as simulation
 from experiments.utils import rng_generator
@@ -30,6 +31,31 @@ def create_eth_price_process(
     ]
     return samples
 
+def create_linear_increasing_aa_process(
+    timesteps=simulation.TIMESTEPS,
+    dt=simulation.DELTA_TIME,
+):
+    # x = st.Arange(0, 1, 0.1).sample()
+    x = st.Arange(0, timesteps * dt + 1, dt).sample()
+
+# aa process we are keeping same as validator adoption rate and we will set it to constant, constant*0.5 and constant*2
+# for normal, low and high aa adoption just like validator adoption for simplicity
+# So just like how many validators are springing up per epoch, here this means how many eths are coming up in this epoch
+# due to aa related mev
+def aa_process(
+    timesteps=simulation.TIMESTEPS, # 360
+    dt=simulation.DELTA_TIME, # 225
+    rng=np.random.default_rng(1),
+    aa_adoption_rate=4,
+):
+
+    process = processes.continuous.PoissonProcess(
+        rate=1 / aa_adoption_rate, rng=rng
+    )
+    samples = process.sample(timesteps * dt + 1)
+    samples = np.diff(samples)
+    samples = [int(sample) for sample in samples]
+    return samples
 
 def create_validator_process(
     timesteps=simulation.TIMESTEPS,

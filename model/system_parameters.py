@@ -42,6 +42,10 @@ from data.api import subgraph
 mean_validator_deposits_per_epoch = (
     subgraph.get_6_month_mean_validator_deposits_per_epoch(default=3)
 )
+#0.016, assuming aa will create same amount of mev as existing one
+mean_aa_mev_per_epoch = (
+    0.016
+)
 
 # Configure validator environment distribution
 validator_environments = [
@@ -226,6 +230,12 @@ class Parameters:
     The default value set to 3 comes from https://beaconscan.com/stat/validator
     using the mean value over the last 6 months from February 26 2021 to August 26 2021.
     """
+
+    aa_process: List[Callable[[Run, Timestep], int]] = default(
+        [
+            lambda _run, _timestep: mean_aa_mev_per_epoch,
+        ]
+    )
 
     # Ethereum system parameters
     daily_pow_issuance: List[ETH] = default([eth_block_rewards_mean])

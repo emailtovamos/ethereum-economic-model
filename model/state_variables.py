@@ -139,7 +139,12 @@ class StateVariables:
     """The total realized normal MEV to validators post Proof-of-Stake"""
     total_realized_mev_to_validators_aa: ETH = 0
     """The total realized aa MEV to validators post Proof-of-Stake"""
+    total_realized_mev_to_validators_aa_independent: ETH = 0
+    """The total realized aa MEV to validators post Proof-of-Stake assuming aa mev evolves independently with its own process/policy"""
 
+    total_realized_mev_to_validators_aa_independent_cumulative: ETH = 0
+#todo add cumulative total_realized_mev_to_validators_aa_independent etc. So that we can plot them directly instead of doing post-processing
+# then only we can get increasing graphs rather than constant graphs
     # System metric state variables
     validator_eth_staked: np.ndarray = np.zeros(
         (number_of_validator_environments, 1), dtype=int
