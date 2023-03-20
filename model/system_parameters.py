@@ -9,6 +9,7 @@ By using a dataclass to represent the System Parameters:
 
 
 import logging
+import math
 import numpy as np
 from dataclasses import dataclass
 from datetime import datetime
@@ -138,6 +139,9 @@ validator_third_party_costs_per_epoch = [
     )
 ]
 
+def aa_process(run: Run, timestep: Timestep) -> int:
+    # Linearly increase the output based on the timestep value
+    return timestep * 10
 
 @dataclass
 class Parameters:
@@ -262,8 +266,15 @@ class Parameters:
     this value can then be calculated per-block to set the `mev_per_block` parameter.
     """
 
-    mev_aa_percentage: List[Percentage] = default([0.4])
+    # initial_mev_aa_percentage: List[Percentage] = default(0.04)
+
+    mev_aa_percentage: List[Callable[[Run, Timestep], Percentage]] = default(
+        [
+            lambda _run, _timestep: 0.7 - 0.66 / (1 + _timestep**2),
+        ]
+    )
     # Account Abstraction (AA) percentage in mev assuming total mev post-AA remains constant
+    # old function lambda _run, _timestep: 0.04 + (0.7 - 0.04) / (1 + math.exp(-0.5 *_timestep)),
 
     # Parameters from the Eth2 specification
     # Uppercase used for all parameters from Eth2 specification

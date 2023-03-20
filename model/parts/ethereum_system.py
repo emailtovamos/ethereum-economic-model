@@ -140,7 +140,7 @@ def policy_mev(params, substep, state_history, previous_state) -> typing.Dict[st
     dt = params["dt"]
     mev_per_block = params["mev_per_block"] # todo make it a variable. e.g. how about mev_per_block changes and increases with time?
     mev_percentage = params["mev_aa_percentage"]
-    mev_percentage = 0.4
+    # mev_percentage = 0.4
 
     # State Variables
     stage = Stage(previous_state["stage"])
@@ -151,6 +151,7 @@ def policy_mev(params, substep, state_history, previous_state) -> typing.Dict[st
     aa_process = params["aa_process"]
 
     aa_mev_per_epoch = aa_process(run, timestep * dt)
+    mev_percentage_in_epoch = mev_percentage(run, timestep * dt)
 
     if stage in [Stage.PROOF_OF_STAKE]:
         total_realized_mev_to_miners = 0
@@ -159,10 +160,10 @@ def policy_mev(params, substep, state_history, previous_state) -> typing.Dict[st
             mev_per_block * constants.slots_per_epoch * dt # 0.2*32*(225*30)
         )
         total_realized_mev_to_validators_normal = (
-                mev_per_block * constants.slots_per_epoch * dt * (1-mev_percentage)
+                mev_per_block * constants.slots_per_epoch * dt * (1-mev_percentage_in_epoch)
         )
         total_realized_mev_to_validators_aa = (
-                mev_per_block * constants.slots_per_epoch * dt * (mev_percentage)
+                mev_per_block * constants.slots_per_epoch * dt * (mev_percentage_in_epoch)
         ) # todo do cumulative for this as well!
         total_realized_mev_to_validators_aa_independent = (
                 aa_mev_per_epoch * dt
